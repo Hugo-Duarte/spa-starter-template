@@ -4,4 +4,4 @@ Includes:
  - Vuejs
  - Vuex
  - Passport API Auth
- - Vuetify)
+ - Vuetify
