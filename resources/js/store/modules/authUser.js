@@ -23,9 +23,13 @@ const actions = {
                     response.data.access_token
                 )
 
-                window.location.replace("/home")
+                window.location.replace("/app")
             }
         })
+    },
+    logoutUser() {
+        localStorage.removeItem("app_token");
+        window.location.replace("/login")
     }
 };
 const mutations = {

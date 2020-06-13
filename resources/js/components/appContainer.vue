@@ -73,7 +73,7 @@
             color="indigo"
             app
         >
-            <span class="white--text">&copy; 2019</span>
+            <span class="white--text">Hugo Duarte &copy; 2019</span>
         </v-footer>
     </v-app>
 </template>
@@ -100,15 +100,16 @@
         },
         methods: {
             logout(){
-                axios.post('/logout')
-                    .then(response => {
-                        window.location.href = 'login'
-                    })
+                this.$store.dispatch("authUser/logoutUser")
             }
         },
         created() {
-            axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("app_token")
-            this.$store.dispatch("authUser/getUser")
+            if (localStorage.hasOwnProperty("app_token")) {
+                axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("app_token")
+                this.$store.dispatch("authUser/getUser")
+            } else {
+                window.location.replace("/login")
+            }
         }
     }
 </script>

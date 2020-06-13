@@ -2011,14 +2011,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
-      axios.post('/logout').then(function (response) {
-        window.location.href = 'login';
-      });
+      this.$store.dispatch("authUser/logoutUser");
     }
   },
   created: function created() {
-    axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("app_token");
-    this.$store.dispatch("authUser/getUser");
+    if (localStorage.hasOwnProperty("app_token")) {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("app_token");
+      this.$store.dispatch("authUser/getUser");
+    } else {
+      window.location.replace("/login");
+    }
   }
 });
 
@@ -40180,7 +40182,9 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("v-footer", { attrs: { color: "indigo", app: "" } }, [
-        _c("span", { staticClass: "white--text" }, [_vm._v("© 2019")])
+        _c("span", { staticClass: "white--text" }, [
+          _vm._v("Hugo Duarte © 2019")
+        ])
       ])
     ],
     1
@@ -96530,9 +96534,13 @@ var actions = {
       if (response.data.access_token) {
         // save token
         localStorage.setItem("app_token", response.data.access_token);
-        window.location.replace("/home");
+        window.location.replace("/app");
       }
     });
+  },
+  logoutUser: function logoutUser() {
+    localStorage.removeItem("app_token");
+    window.location.replace("/login");
   }
 };
 var mutations = {
